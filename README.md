@@ -61,24 +61,24 @@ Creates a new memory pool.  The new pool has `NUM` objects of type `TYPE`.
 >**Return Values**  
 >On success: returns a pointer to the new fmpool.  
 >On failure: returns a `NULL` pointer.  
-
+  
 #### fmpool_destroy(TYPE, POOL)
 Frees all memory associated with `POOL`.
 >**Return Values**  
 >Returns no value. (mimics C99 standard).
-
+  
 #### fmpool_get(TYPE, POOL)
 Grabs an unused object from the pool.
 >**Return Values**  
 >On success: returns a `TYPE` pointer.  
 >On failure: returns a `NULL` pointer.
-
+  
 #### fmpool_free(TYPE, OBJ, POOL)
 If `OBJ` is controlled by `POOL`, sets it as unused.  Does not zero memory.
 >**Return Values**  
 >On success: returns `true`.  
 >On failure: returns `false`.
-
+  
 ## License
 [MIT License](http://dn.mit-license.org)
 
