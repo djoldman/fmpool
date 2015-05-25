@@ -1,18 +1,10 @@
-CFLAGS =
-CFLAGS += -g
-CFLAGS += -O3
-CFLAGS += -Wall
-CFLAGS += --std=c99
-CFLAGS += -Wno-unused-function
-CFLAGS += -fno-inline
-
-INC =
-INC += -I../
-
 .PHONY: all perftest
 
-all: perftest
+all: perftest example
 
 perftest:
-	cd perftest; gcc $(CFLAGS) $(INC) perftest.c -o ../bin/perftest
+	cd perftest; make
 
+clean:
+	rm -fr example example.o
+	cd perftest; make clean
