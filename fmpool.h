@@ -26,7 +26,6 @@
 
 #include <stddef.h> /* size_t */
 #include <stdlib.h> /* calloc, free */
-#include <stdio.h> /* printf */
 #include <stdbool.h> /* bool */
 
 #define FMPOOL_INLINE __attribute__((always_inline)) /* TODO: ? */
@@ -48,6 +47,10 @@
   static FMPOOL_INLINE fmpool_##TYPE##_t* \
   fmpool_##TYPE##_create(const size_t num) \
   { \
+    if(num == 0) \
+    { \
+      return NULL; /* creating pool with zero items */ \
+    } \
     fmpool_##TYPE##_t* P; \
     P = calloc(1, sizeof(fmpool_##TYPE##_t)); \
     if(P == NULL) \
@@ -57,6 +60,7 @@
     P->items = calloc(num, sizeof(fmpool_##TYPE##_item_t)); \
     if(P->items == NULL) \
     { \
+      free(P); \
       return NULL; /* calloc failed */ \
     } \
     P->head = &P->items[0]; \

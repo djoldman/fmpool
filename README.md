@@ -4,6 +4,9 @@ This is a C99 header library that provides efficient type-generic code to alloca
 
 This library is built for situations where programs repeatedly call malloc/calloc/new/etc. for small data structures, followed closely by free/delete.  Once a pool is created, getting a pointer from the pool to an unused object costs a couple of machine instructions.  Boost memory pools and others are overkill sometimes.
 
+Limitations:
+   * Memory pools are statically-sized.
+
 Inspired by [computer game particles](http://gameprogrammingpatterns.com/object-pool.html).
 
 ## Try it now
