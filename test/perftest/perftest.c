@@ -1,4 +1,6 @@
 #include <time.h>
+#include <stdio.h>
+
 #include "fmpool.h"
 
 #define NOINLINE __attribute__((noinline))

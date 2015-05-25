@@ -1,14 +1,17 @@
-.PHONY: all perftest functest
+.PHONY: all functest perftest example
 
 all: functest perftest example
 
-perftest:
-	cd perftest; make
-
 functest:
-	cd functest; make
+	cd test/functest; make
+
+perftest:
+	cd test/perftest; make
+
+example:
+	cd test/example; make
 
 clean:
-	rm -fr example example.o
-	cd perftest; make clean
-	cd functest; make clean
+	cd test/functest; make clean
+	cd test/perftest; make clean
+	cd test/example; make clean
