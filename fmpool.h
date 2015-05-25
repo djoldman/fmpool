@@ -54,10 +54,7 @@
     { \
       return NULL; /* calloc failed */ \
     } \
-    /* calloc of size zero's return value is implementation defined */ \
-    /* as a result, calling with num == 0 leads to two different behaviors */ \
-    /* depending on how your system's calloc responds */ \
-    P->items = calloc(num ? num : 1, sizeof(fmpool_##TYPE##_item_t)); \
+    P->items = calloc(num, sizeof(fmpool_##TYPE##_item_t)); \
     if(P->items == NULL) \
     { \
       return (free(P),NULL); /* calloc failed */ \
