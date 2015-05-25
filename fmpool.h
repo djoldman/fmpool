@@ -54,19 +54,29 @@
     { \
       return NULL; /* calloc failed */ \
     } \
-    P->items = calloc(num, sizeof(fmpool_##TYPE##_item_t)); \
+    /* calloc of size zero's return value is implementation defined */ \
+    /* as a result, calling with num == 0 leads to two different behaviors */ \
+    /* depending on how your system's calloc responds */ \
+    P->items = calloc(num ? num : 1, sizeof(fmpool_##TYPE##_item_t)); \
     if(P->items == NULL) \
     { \
-      return NULL; /* calloc failed */ \
+      return (free(P),NULL); /* calloc failed */ \
     } \
-    P->head = &P->items[0]; \
-    P->last = &P->items[num - 1]; \
     P->num = num; \
+    if(num == 0) { \
+       P->head = NULL; \
+       P->last = NULL; \
+       goto out; \
+    } else { \
+        P->head = &P->items[0]; \
+        P->last = &P->items[num - 1]; \
+    } \
     for(size_t i = 0; i < num - 1; i++) \
     { \
       P->items[i].next = &P->items[i + 1]; \
     } \
     P->items[num - 1].next = NULL; \
+    out: \
     return P; \
   } \
   static FMPOOL_INLINE void fmpool_##TYPE##_destroy(fmpool_##TYPE##_t* P) \
