@@ -41,7 +41,6 @@
   { \
     fmpool_##TYPE##_item_t* items; \
     fmpool_##TYPE##_item_t* head; \
-    fmpool_##TYPE##_item_t* last; /* TODO: Remove? */ \
     size_t num; \
   } fmpool_##TYPE##_t; \
   static FMPOOL_INLINE fmpool_##TYPE##_t* \
@@ -64,7 +63,6 @@
       return NULL; /* calloc failed */ \
     } \
     P->head = &P->items[0]; \
-    P->last = &P->items[num - 1]; \
     P->num = num; \
     for(size_t i = 0; i < num - 1; i++) \
     { \
@@ -92,7 +90,7 @@
       fmpool_##TYPE##_t* P) \
   { \
     fmpool_##TYPE##_item_t* I = (fmpool_##TYPE##_item_t*)OBJ;\
-    if((I < P->items) || (I > P->last)) \
+    if((I < P->items) || (I >= (P->items + P->num))) \
     { \
       return false; \
     } \
