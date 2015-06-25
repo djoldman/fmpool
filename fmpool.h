@@ -41,15 +41,8 @@
   { \
     fmpool_##TYPE##_item_t* items; \
     fmpool_##TYPE##_item_t* head; \
-    TYPE* (*ctor)(TYPE*); \
-    TYPE* (*dtor)(TYPE*); \
     size_t num; \
   } fmpool_##TYPE##_t; \
-  static FMPOOL_INLINE bool fmpool_##TYPE##_free(TYPE* OBJ, \
-      fmpool_##TYPE##_t* P); \
-  static TYPE* fmpool_##TYPE##_default(TYPE* data) { \
-      return data; \
-  } \
   static FMPOOL_INLINE fmpool_##TYPE##_t* \
   fmpool_##TYPE##_create(const size_t num) \
   { \
@@ -76,8 +69,6 @@
       P->items[i].next = &P->items[i + 1]; \
     } \
     P->items[num - 1].next = NULL; \
-    P->ctor = fmpool_##TYPE##_default; \
-    P->dtor = fmpool_##TYPE##_default; \
     return P; \
   } \
   static FMPOOL_INLINE void fmpool_##TYPE##_destroy(fmpool_##TYPE##_t* P) \
@@ -93,12 +84,11 @@
       return NULL; \
     } \
     P->head = item->next; \
-    return(P->ctor(&item->data) ? &item->data : (fmpool_##TYPE##_free(&item->data,P),NULL)); \
+    return &item->data; \
   } \
   static FMPOOL_INLINE bool fmpool_##TYPE##_free(TYPE* OBJ, \
       fmpool_##TYPE##_t* P) \
   { \
-    (void)P->dtor(OBJ); \
     fmpool_##TYPE##_item_t* I = (fmpool_##TYPE##_item_t*)OBJ;\
     if((I < P->items) || (I >= (P->items + P->num))) \
     { \
