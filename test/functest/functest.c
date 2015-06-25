@@ -17,6 +17,19 @@ FMPOOL_INIT(Point_t)
        exit(EXIT_FAILURE); \
    }
 
+#define NUMITEMS 10
+static void free_under_and_overflow_test(const char* failure_msg) {
+  fmpool_t(Point_t)* pool = fmpool_create(Point_t,NUMITEMS);
+  Point_t* p = fmpool_get(Point_t,pool);
+  /* test the underflow case */
+  FAILTEST(fmpool_free(Point_t,p-1,pool) != false,failure_msg);
+  /* test the overflow case */
+  FAILTEST(fmpool_free(Point_t,p+NUMITEMS,pool) != false,failure_msg);
+  FAILTEST(fmpool_free(Point_t,p,pool) != true,failure_msg);
+  if(pool) {
+    fmpool_destroy(Point_t, pool);
+  }
+}
 static void zero_allocation_test(const char* failure_msg) {
   fmpool_t(Point_t)* p;
   FAILTEST(((p = fmpool_create(Point_t,0)) != NULL),failure_msg);
@@ -53,6 +66,7 @@ int main()
   zero_allocation_test("Allocating zero-length pool isn't allowed");
   allocate_test(1,one_allocation_test, "Failed allocating one-length pool");
   allocate_test(2,freelist_simple_test,"Failed freelist simple test");
+  free_under_and_overflow_test("Failed under/over flow test");
   return 0;
 }
 
