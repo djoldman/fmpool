@@ -1,6 +1,6 @@
 /*
   The MIT License (MIT)
-  Copyright © 2015 David Newman
+  Copyright © 2015-2016 David Newman
 
   Permission is hereby granted, free of charge, to any person obtaining a copy 
   of this software and associated documentation files (the “Software”), to deal 
@@ -97,7 +97,7 @@
     I->next = P->head; \
     P->head = I; \
     return true; \
-  } \
+  }
 
 #define fmpool_t(TYPE) fmpool_##TYPE##_t
 #define fmpool_create(TYPE, NUM) fmpool_##TYPE##_create(NUM)
